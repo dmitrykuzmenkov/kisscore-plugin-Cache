@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+declare -a checks=(
+  'which memcached'
+  'php -m | grep memcached$'
+)
+run-checks "${checks[@]}"
