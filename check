@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
-declare -a checks=(
-  'which memcached'
-  'php -m | grep memcached$'
-)
-run-checks "${checks[@]}"
+if [[ -z `php -m | grep memcached$` ]]; then
+  echo 'Cant find memcached module in `php -m`'
+  exit 1
+fi
