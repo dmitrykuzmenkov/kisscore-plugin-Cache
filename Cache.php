@@ -45,9 +45,10 @@ class Cache {
    *
    * @param mixed $key
    * @param mixed $default Closure | mixed если это замыкание, то кэш записвыается
+   * @param int $ttl Optional TTL for expires
    * @return mixed кэшированное данное
    */
-  public static function get($key, $default = null) {
+  public static function get($key, $default = null, $ttl = 0) {
     $items = is_string($key) ? static::connect()->get($key) : static::connect()->getMulti($key);
 
     // Если массив, то нужно выполнить преобразования для возвращаемых данных
@@ -66,10 +67,11 @@ class Cache {
         $items = &$result;
       }
     }
+
     if (false === $items) {
       $items = $default;
       if (is_string($key) && is_callable($default)) {
-        static::set($key, $items = $default());
+        static::set($key, $items = $default(), $ttl);
       }
     }
     return $items;
