@@ -154,11 +154,12 @@ class Cache {
    *
    * @param string $key
    * @param int $count количество, на которое необходимо увеличить счетчик
+   * @param int $ttl Время жизни необходимое при установке нового счетчика
    * @return mixed Новое значение с учетом увеличения или FALSE
    */
-  public static function increment($key, $count = 1) {
+  public static function increment($key, $count = 1, $ttl = 0) {
     if (false === $result = static::connect()->increment($key, $count)) {
-      static::set($key, $count);
+      static::set($key, $count, $ttl);
       return $count;
     }
     return $result;
@@ -169,8 +170,8 @@ class Cache {
    *
    * @see self::increment()
    */
-  public static function decrement($key, $count = 1) {
-    return static::increment($key, -$count);
+  public static function decrement($key, $count = 1, $ttl = 0) {
+    return static::increment($key, -$count, $ttl);
   }
 
   /**
