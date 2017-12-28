@@ -78,11 +78,12 @@ class Cache {
   }
 
   public static function getCas($key) {
-    return static::connect()->getCas($key);
+    $info = static::connect()->get($key, null, Memcached::GET_EXTENDED);
+    return $info['cas'] ?? 0;
   }
 
-  public static function setWithCas($key, $val, $token) {
-    return static::connect()->setWithCas($key, $val, $token);
+  public static function setWithCas($token, $key, $val, $ttl = 0) {
+    return static::connect()->cas($token, $key, $val, $ttl);
   }
 
   /**
@@ -146,6 +147,10 @@ class Cache {
 
   public static function delete($key) {
     return static::remove($key);
+  }
+
+  public static function touch($key, $ttl = 0) {
+    return static::connect()->touch($key, $ttl);
   }
 
   /**
