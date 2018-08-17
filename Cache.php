@@ -95,8 +95,8 @@ class Cache {
    * @return mixed Булевый тип или же массив с булевыми значениями для всех ключей
    */
   public static function set($key, $val, $ttl = 0) {
-    assert("is_string(\$key) || is_array(\$key)");
-    assert("is_int(\$ttl)");
+    assert(is_string($key) || is_array($key));
+    assert(is_int($ttl));
 
     return is_string($key)
       ? static::connect()->set($key, $val, $ttl)
